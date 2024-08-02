@@ -3,7 +3,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/fireba
   import { getAuth, 
     onAuthStateChanged, 
     createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword } 
+    signInWithEmailAndPassword, 
+    signOut } 
     from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
   const firebaseConfig = {
@@ -28,16 +29,30 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/fireba
   const signin_password = document.getElementById("signin_password");
   const signin_btn = document.getElementById("signin_btn");
 
+  const user_email =document.getElementById("user_email");
+  const logout_btn =document.getElementById("logout_btn");
+  
+  const auth_container =document.getElementById("auth_container");
+  const user_container =document.getElementById("user_container");
+
+  
+
   signup_btn.addEventListener("click", createUserAccount);
   signin_btn.addEventListener("click", singIn);
+  logout_btn.addEventListener("click", logout);
 
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log("User is logged in")
     const uid = user.uid;
+    auth_container.style.display = "none";
+    user_container.style.display = "block";
+    user_email .innerText = user.email; 
     } else {
         console.log("No user is signed in");
+        auth_container.style.display = "block";
+        user_container.style.display = "none";    
     }
   });
 
@@ -71,4 +86,12 @@ onAuthStateChanged(auth, (user) => {
 
     // console.log("email=>", signin_email.value);
     // console.log("password=>", signin_password.value);
+  }
+
+  function logout(){
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
   }

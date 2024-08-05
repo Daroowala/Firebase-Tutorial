@@ -9,7 +9,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/fireba
     from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
 // Fire Store
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+    import { getFirestore, 
+      collection, 
+      addDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBswAy79OlMNrdSF3p9WA4a13AVTWou568",
@@ -25,8 +27,16 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/fireba
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
   const db = getFirestore(app);
+  let todosCollection = collection(db, "todos");
+
+  const todo_input = document.getElementById("todo_input");
+  const add_todo = document.getElementById("add_todo");
+
+  add_todo.addEventListener('click', addTodoToDb)
+
+
   console.log("app", db);
-  
+
   const auth = getAuth(app);
   const signup_email = document.getElementById("signup_email");
   const signup_password = document.getElementById("signup_password");
@@ -100,4 +110,17 @@ onAuthStateChanged(auth, (user) => {
     }).catch((error) => {
       // An error happened.
     });
+  }
+
+  async function addNumberToDb() {
+    try {
+      const docRef = await addDoc(collection(db, "users"), {
+        first: "Ada",
+        last: "Lovelace",
+        born: 1815
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   }

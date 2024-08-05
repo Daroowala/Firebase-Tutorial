@@ -1,3 +1,4 @@
+// Authentication
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
   import { getAuth, 
@@ -6,6 +7,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/fireba
     signInWithEmailAndPassword, 
     signOut } 
     from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+
+// Fire Store
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBswAy79OlMNrdSF3p9WA4a13AVTWou568",
@@ -20,6 +24,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/fireba
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+  console.log("app", db);
+  
   const auth = getAuth(app);
   const signup_email = document.getElementById("signup_email");
   const signup_password = document.getElementById("signup_password");
@@ -35,7 +42,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/fireba
   const auth_container =document.getElementById("auth_container");
   const user_container =document.getElementById("user_container");
 
-  
 
   signup_btn.addEventListener("click", createUserAccount);
   signin_btn.addEventListener("click", singIn);
@@ -44,26 +50,26 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/fireba
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        console.log("User is logged in")
+        // console.log("User is logged in")
     const uid = user.uid;
     auth_container.style.display = "none";
     user_container.style.display = "block";
     user_email .innerText = user.email; 
     } else {
-        console.log("No user is signed in");
+        // console.log("No user is signed in");
         auth_container.style.display = "block";
         user_container.style.display = "none";    
     }
   });
 
   function createUserAccount(){
-    console.log("email=>",signup_email.value);
-    console.log("password=>",signup_password.value);
+    // console.log("email=>",signup_email.value);
+    // console.log("password=>",signup_password.value);
     createUserWithEmailAndPassword(auth, signup_email.value, signup_password.value)
   .then((userCredential) => {
     
     const user = userCredential.user;
-    console.log("User=>", user);
+    // console.log("User=>", user);
   })
   .catch((error) => {
     const errorCode = error.code;
@@ -76,7 +82,7 @@ onAuthStateChanged(auth, (user) => {
   .then((userCredential) => {
      
     const user = userCredential.user;
-   console.log("User")
+  //  console.log("User")
   })
   .catch((error) => {
     const errorCode = error.code;
